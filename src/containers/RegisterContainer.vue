@@ -86,8 +86,6 @@ const validateUsername = async () => {
     userId.value
   );
 
-  console.log("res", res);
-
   if (res?.status == 409) {
     userExists.value = true;
   }
