@@ -259,7 +259,7 @@ defineProps({
 
 .eyeIconOne {
   position: absolute;
-  top: 4rem;
+  top: 4.5rem;
   right: 0;
   height: 26%;
   width: 18%;
@@ -267,7 +267,7 @@ defineProps({
 
 .eyeIconTwo {
   position: absolute;
-  top: 9rem;
+  top: 9.8rem;
   right: 0;
   height: 22%;
   width: 18%;
