@@ -5,13 +5,15 @@ export const updatePasswordApi = async (
   password: string,
   id: string,
   service: string,
-  username: string
+  username: string,
+  idCompany: string
 ) => {
   try {
     const data = {
       username,
       password,
       service,
+      idCompany,
     };
 
     const response = await useClient().put(
@@ -21,8 +23,6 @@ export const updatePasswordApi = async (
 
     return response;
   } catch (error) {
-    console.log("e", error);
-
     return error;
   }
 };

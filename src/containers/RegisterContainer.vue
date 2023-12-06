@@ -33,6 +33,7 @@ let eyeIconTwo = ref(false);
 let apiResponse = ref("");
 let statusCode = ref(0);
 let userId = ref("");
+let idCompany = ref("");
 let service = ref("");
 let userExists = ref(false);
 let userRegistration = reactive({
@@ -46,6 +47,7 @@ const getUserId = () => {
 
   let urlParts = url.split("/");
 
+  idCompany.value = urlParts.pop() as string;
   userId.value = urlParts.pop() as string;
   service.value = urlParts.pop() as string;
 };
@@ -61,8 +63,10 @@ const updatedPassword = async () => {
     userRegistration.passwordTwo,
     userId.value,
     service.value,
-    userRegistration.username
+    userRegistration.username,
+    idCompany.value
   );
+  console.log("res", res);
 
   handleApiResponse(res?.status);
 
@@ -92,6 +96,8 @@ const validateUsername = async () => {
 };
 
 const redirect = (data: string) => {
+  console.log("red", data);
+
   setTimeout(() => {
     window.location.href = data;
   }, 6000);
