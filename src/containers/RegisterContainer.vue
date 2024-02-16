@@ -1,30 +1,53 @@
 <template>
   <Loading v-if="showLoading" />
 
-  <Register
-    :eyeIconOne="eyeIconOne"
-    :eyeIconTwo="eyeIconTwo"
-    :showButton="showButton"
-    :apiResponse="apiResponse"
-    :statusCode="statusCode"
-    :userExists="userExists"
-    :getPasswordOne="getPasswordOne"
-    :getPasswordTwo="getPasswordTwo"
-    :getUsername="getUsername"
-    :showPassord="showPassord"
-    :updatedPassword="updatedPassword"
-    :validateUsername="validateUsername"
-  />
+  <div class="container">
+    <div class="registerContainer">
+      <Register
+        v-if="isRegistrationLink"
+        :eyeIconOne="eyeIconOne"
+        :eyeIconTwo="eyeIconTwo"
+        :showButton="showButton"
+        :apiResponse="apiResponse"
+        :statusCode="statusCode"
+        :userExists="userExists"
+        :getPasswordOne="getPasswordOne"
+        :getPasswordTwo="getPasswordTwo"
+        :getUsername="getUsername"
+        :showPassord="showPassord"
+        :finalizeRegistration="finalizeRegistration"
+        :validateUsername="validateUsername"
+      />
+
+      <UpdatePassword
+        v-else
+        :validadePassword="validadePassword"
+        :eyeIconOne="eyeIconOne"
+        :eyeIconTwo="eyeIconTwo"
+        :apiResponse="apiResponse"
+        :statusCode="statusCode"
+        :getPasswordOne="getPasswordOne"
+        :getPasswordTwo="getPasswordTwo"
+        :getUsername="getUsername"
+        :showPassord="showPassord"
+      />
+    </div>
+
+    <Logo />
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { updatePasswordApi } from "@/api/updatePassword";
+import UpdatePassword from "@/components/UpdatePassword.vue";
 import Register from "@/components/Register.vue";
 import { onMounted } from "vue";
 import { ref, reactive, watch } from "vue";
 import Loading from "@/components/Loading.vue";
 import { Message } from "@/utils/enum";
 import { usernameExists } from "@/api/user";
+import Logo from "@/components/Logo.vue";
+import router from "@/router";
 
 let showButton = ref(false);
 let showLoading = ref(false);
@@ -35,6 +58,7 @@ let statusCode = ref(0);
 let userId = ref("");
 let idCompany = ref("");
 let service = ref("");
+let isRegistrationLink = ref(true);
 let userExists = ref(false);
 let userRegistration = reactive({
   username: "",
@@ -42,7 +66,13 @@ let userRegistration = reactive({
   passwordTwo: "",
 });
 
-const getUserId = () => {
+const validadePassword = (password: string, confirmPassword: string) => {
+  if (password == confirmPassword && password != "" && confirmPassword != "")
+    return true;
+  else return false;
+};
+
+const getUserIdForRegistration = () => {
   let url = window.location.href;
 
   let urlParts = url.split("/");
@@ -50,13 +80,30 @@ const getUserId = () => {
   idCompany.value = urlParts.pop() as string;
   userId.value = urlParts.pop() as string;
   service.value = urlParts.pop() as string;
+  isRegistrationLink.value = true;
+};
+
+const getUserIdForUpdate = () => {
+  let url = window.location.href;
+
+  let urlParts = url.split("/");
+
+  userId.value = urlParts.pop() as string;
+  service.value = urlParts.pop() as string;
+  isRegistrationLink.value = false;
+
+  console.log(userId.value, service.value, isRegistrationLink.value);
 };
 
 onMounted(() => {
-  getUserId();
+  if (router.currentRoute.value.name == "Cadastro") {
+    getUserIdForRegistration();
+  } else {
+    getUserIdForUpdate();
+  }
 });
 
-const updatedPassword = async () => {
+const finalizeRegistration = async () => {
   showLoading.value = true;
 
   const res: any = await updatePasswordApi(
@@ -66,7 +113,6 @@ const updatedPassword = async () => {
     userRegistration.username,
     idCompany.value
   );
-  console.log("res", res);
 
   handleApiResponse(res?.status);
 
@@ -143,3 +189,20 @@ watch(userRegistration, () => {
   else showButton.value = false;
 });
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.registerContainer {
+  background: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom-right-radius: 10rem;
+}
+</style>

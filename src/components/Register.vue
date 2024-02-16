@@ -1,94 +1,76 @@
 <template>
-  <div class="container">
-    <div class="registerContainer">
-      <div class="userInputContainer glass-effect userInput">
-        <div class="text-center">
-          <h1 class="text-v_dark_green">Cadastrar senha</h1>
+  <div class="userInputContainer glass-effect userInput">
+    <div class="text-center">
+      <h1 class="text-v_dark_green">Finalizar cadastro</h1>
 
-          <h3 class="text-v_dark_gray">
-            Após o cadastro você terá acesso as funcionalidades
-          </h3>
-        </div>
-
-        <form class="inputContainer" @submit.prevent="updatedPassword">
-          <input
-            :class="
-              userExists ? 'userExists inputLogin input' : 'inputLogin input'
-            "
-            placeholder="Username:"
-            type="text"
-            @keyup="getUsername(($event.target as HTMLInputElement).value)"
-            @blur="
-              ($event.target as HTMLInputElement).value != '' &&
-                validateUsername()
-            "
-          />
-
-          <input
-            class="inputLogin input"
-            placeholder="Senha:"
-            type="password"
-            id="pass1"
-            @keyup="getPasswordOne(($event.target as HTMLInputElement).value)"
-          />
-
-          <button
-            class="eyeIconOne"
-            @click.prevent="showPassord('#pass1', $event)"
-          >
-            <v-icon
-              :icon="eyeIconOne ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-            />
-          </button>
-
-          <input
-            class="inputLogin input"
-            placeholder="Repetir senha:"
-            type="password"
-            id="pass2"
-            @keyup="getPasswordTwo(($event.target as HTMLInputElement).value)"
-          />
-
-          <p :class="statusCode == 200 ? 'sucess' : 'error'">
-            {{ apiResponse }}
-          </p>
-
-          <p v-if="userExists" class="error">
-            Esse username já existe em nossa base
-          </p>
-
-          <button
-            class="eyeIconTwo"
-            @click.prevent="showPassord('#pass2', $event)"
-          >
-            <v-icon
-              :icon="eyeIconTwo ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-            />
-          </button>
-
-          <button
-            :disabled="!showButton"
-            :class="showButton ? 'submitBtn' : 'disabledBtn'"
-            type="submit"
-          >
-            Salvar
-          </button>
-        </form>
+      <div class="containerSubtittle">
+        <h1 class="subtittle">
+          Após o cadastro você terá acesso as funcionalidades
+        </h1>
       </div>
     </div>
 
-    <div class="logoContainer">
-      <Vue3Lottie :animationData="animation" :width="400" class="hidden" />
+    <form class="inputContainer" @submit.prevent="finalizeRegistration">
+      <input
+        :class="userExists ? 'userExists inputLogin input' : 'inputLogin input'"
+        placeholder="Username:"
+        type="text"
+        @keyup="getUsername(($event.target as HTMLInputElement).value)"
+        @blur="
+          ($event.target as HTMLInputElement).value != '' && validateUsername()
+        "
+      />
 
-      <h1 class="title hidden">Meu cadastro seguro</h1>
-    </div>
+      <input
+        class="inputLogin input"
+        placeholder="Senha:"
+        type="password"
+        id="pass1"
+        @keyup="getPasswordOne(($event.target as HTMLInputElement).value)"
+      />
+
+      <button class="eyeIconOne" @click.prevent="showPassord('#pass1', $event)">
+        <v-icon
+          :icon="eyeIconOne ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+        />
+      </button>
+
+      <input
+        class="inputLogin input"
+        placeholder="Repetir senha:"
+        type="password"
+        id="pass2"
+        @keyup="getPasswordTwo(($event.target as HTMLInputElement).value)"
+      />
+
+      <p :class="statusCode == 200 ? 'sucess' : 'error'">
+        {{ apiResponse }}
+      </p>
+
+      <p v-if="userExists" class="error">
+        Esse username já existe em nossa base
+      </p>
+
+      <button class="eyeIconTwo" @click.prevent="showPassord('#pass2', $event)">
+        <v-icon
+          :icon="eyeIconTwo ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+        />
+      </button>
+
+      <button
+        :disabled="!showButton"
+        :class="showButton ? 'submitBtn' : 'disabledBtn'"
+        type="submit"
+      >
+        Salvar
+      </button>
+    </form>
   </div>
 </template>
 
 <script lang="ts" setup>
 /* eslint-disable no-undef */
 
-import animation from "@/assets/animation.json";
 import { PropType } from "vue";
 
 defineProps({
@@ -124,7 +106,7 @@ defineProps({
     required: true,
   },
 
-  updatedPassword: {
+  finalizeRegistration: {
     type: Function as PropType<(event: Event) => void>,
     required: true,
   },
@@ -137,32 +119,6 @@ defineProps({
 </script>
 
 <style>
-.container {
-  display: flex;
-  justify-content: space-between;
-  height: 100vh;
-}
-
-.logoContainer {
-  background: linear-gradient(to bottom, #1e92c8, #5dc4e4);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-bottom-left-radius: 50rem;
-  width: 65%;
-  padding-left: 15rem;
-}
-
-.registerContainer {
-  background: #f8f8f8;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-bottom-right-radius: 10rem;
-}
-
 .userInputContainer {
   width: 40%;
   height: 35rem;
@@ -213,12 +169,6 @@ defineProps({
 
 .error {
   color: #ff0f00;
-}
-
-.title {
-  color: #fff;
-  position: absolute;
-  bottom: 8rem;
 }
 
 .submitBtn {
@@ -315,5 +265,15 @@ input {
   .inputLogin {
     width: calc(100% - 0.2rem) !important;
   }
+}
+
+.containerSubtittle {
+  background: #f8f8f8;
+  border-radius: 0.5em;
+  padding: 0.2em 0.5em;
+}
+
+.subtittle {
+  font-size: 1rem;
 }
 </style>

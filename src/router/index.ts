@@ -7,6 +7,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "Cadastro",
     component: Register,
   },
+  {
+    path: "/nova_senha/:params/:id",
+    name: "Nova Senha",
+    component: Register,
+  },
 ];
 
 const router = createRouter({
