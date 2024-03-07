@@ -2,12 +2,6 @@
   <div class="userInputContainer glass-effect userInput">
     <div class="text-center">
       <h1 class="text-v_dark_green">Finalizar cadastro</h1>
-
-      <div class="containerSubtittle">
-        <h1 class="subtittle">
-          Após o cadastro você terá acesso as funcionalidades
-        </h1>
-      </div>
     </div>
 
     <form class="inputContainer" @submit.prevent="finalizeRegistration">

@@ -5,7 +5,10 @@
         <h1 class="text-v_dark_green">Redefinir senha</h1>
       </div>
 
-      <form class="inputContainer" @submit.prevent="">
+      <form
+        class="inputContainer"
+        @submit.prevent="updatePassword(confirmPassword)"
+      >
         <input
           class="inputLogin input"
           placeholder="Senha:"
@@ -83,18 +86,13 @@ defineProps({
 
   eyeIconTwo: { type: Boolean, required: true },
 
-  getPasswordOne: {
-    type: Function as PropType<(password: string) => void>,
-    required: true,
-  },
-
-  getPasswordTwo: {
-    type: Function as PropType<(password: string) => void>,
-    required: true,
-  },
-
   showPassord: {
     type: Function as PropType<(id: string, event: Event) => void>,
+    required: true,
+  },
+
+  updatePassword: {
+    type: Function as PropType<(confirmPassword: string) => void>,
     required: true,
   },
 });

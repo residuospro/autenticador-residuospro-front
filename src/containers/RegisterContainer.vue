@@ -22,14 +22,12 @@
       <UpdatePassword
         v-else
         :validadePassword="validadePassword"
+        :updatePassword="updatePassword"
+        :showPassord="showPassord"
         :eyeIconOne="eyeIconOne"
         :eyeIconTwo="eyeIconTwo"
         :apiResponse="apiResponse"
         :statusCode="statusCode"
-        :getPasswordOne="getPasswordOne"
-        :getPasswordTwo="getPasswordTwo"
-        :getUsername="getUsername"
-        :showPassord="showPassord"
       />
     </div>
 
@@ -38,14 +36,17 @@
 </template>
 
 <script lang="ts" setup>
-import { updatePasswordApi } from "@/api/updatePassword";
 import UpdatePassword from "@/components/UpdatePassword.vue";
 import Register from "@/components/Register.vue";
 import { onMounted } from "vue";
 import { ref, reactive, watch } from "vue";
 import Loading from "@/components/Loading.vue";
 import { Message } from "@/utils/enum";
-import { usernameExists } from "@/api/user";
+import {
+  usernameExists,
+  createRegsiterApi,
+  updatePasswordApi,
+} from "@/api/user";
 import Logo from "@/components/Logo.vue";
 import router from "@/router";
 
@@ -106,7 +107,7 @@ onMounted(() => {
 const finalizeRegistration = async () => {
   showLoading.value = true;
 
-  const res: any = await updatePasswordApi(
+  const res: any = await createRegsiterApi(
     userRegistration.passwordTwo,
     userId.value,
     service.value,
@@ -121,11 +122,26 @@ const finalizeRegistration = async () => {
   showLoading.value = false;
 };
 
+const updatePassword = async (password: string) => {
+  showLoading.value = true;
+
+  const res: any = await updatePasswordApi(userId.value, password);
+
+  handleApiResponse(res?.status);
+
+  redirect(res?.data);
+
+  showLoading.value = false;
+};
+
 const handleApiResponse = (status: number) => {
   statusCode.value = status;
 
-  if (status == 200) apiResponse.value = Message.SUCESS;
-  else apiResponse.value = Message.ERROR;
+  if (status == 200) {
+    apiResponse.value = Message.SUCESS;
+  } else {
+    apiResponse.value = Message.ERROR;
+  }
 
   showButton.value = false;
 };
@@ -142,8 +158,6 @@ const validateUsername = async () => {
 };
 
 const redirect = (data: string) => {
-  console.log("red", data);
-
   setTimeout(() => {
     window.location.href = data;
   }, 6000);
