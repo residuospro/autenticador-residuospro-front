@@ -43,6 +43,7 @@ export const updatePasswordApi = async (id: string, password: string) => {
   try {
     const data = {
       password,
+      isAuthenticator: true,
     };
 
     const response = await useClient().put(
