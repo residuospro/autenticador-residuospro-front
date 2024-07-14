@@ -58,6 +58,7 @@ let apiResponse = ref("");
 let statusCode = ref(0);
 let userId = ref("");
 let idCompany = ref("");
+let idBase = ref("");
 let service = ref("");
 let isRegistrationLink = ref(true);
 let userExists = ref(false);
@@ -78,10 +79,13 @@ const getUserIdForRegistration = () => {
 
   let urlParts = url.split("/");
 
+  idBase.value = urlParts.pop() as string;
   idCompany.value = urlParts.pop() as string;
   userId.value = urlParts.pop() as string;
   service.value = urlParts.pop() as string;
   isRegistrationLink.value = true;
+
+  console.log(idBase.value, idCompany.value, userId.value, service.value);
 };
 
 const getUserIdForUpdate = () => {
@@ -92,8 +96,6 @@ const getUserIdForUpdate = () => {
   userId.value = urlParts.pop() as string;
   service.value = urlParts.pop() as string;
   isRegistrationLink.value = false;
-
-  console.log(userId.value, service.value, isRegistrationLink.value);
 };
 
 onMounted(() => {
@@ -112,7 +114,8 @@ const finalizeRegistration = async () => {
     userId.value,
     service.value,
     userRegistration.username,
-    idCompany.value
+    idCompany.value,
+    idBase.value
   );
 
   handleApiResponse(res?.status);

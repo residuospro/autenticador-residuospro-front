@@ -18,7 +18,8 @@ export const createRegsiterApi = async (
   id: string,
   service: string,
   username: string,
-  idCompany: string
+  idCompany: string,
+  idBase: string
 ) => {
   try {
     const data = {
@@ -26,6 +27,7 @@ export const createRegsiterApi = async (
       password,
       service,
       idCompany,
+      idBase,
     };
 
     const response = await useClient().put(
