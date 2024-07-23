@@ -49,6 +49,9 @@ import {
 } from "@/api/user";
 import Logo from "@/components/Logo.vue";
 import router from "@/router";
+import { toast, ToastOptions } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import { ITypeToasts } from "@/utils/interfaces";
 
 let showButton = ref(false);
 let showLoading = ref(false);
@@ -68,6 +71,21 @@ let userRegistration = reactive({
   passwordTwo: "",
 });
 
+const notify = (types: string, time: number | boolean, msg: string) => {
+  const typeToast: ITypeToasts = {
+    SUCCESS: toast.TYPE.SUCCESS,
+    WARNING: toast.TYPE.WARNING,
+    ERROR: toast.TYPE.ERROR,
+    INFO: toast.TYPE.INFO,
+  };
+
+  toast(msg, {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: time,
+    type: typeToast[types as keyof ITypeToasts],
+  } as ToastOptions);
+};
+
 const validadePassword = (password: string, confirmPassword: string) => {
   if (password == confirmPassword && password != "" && confirmPassword != "")
     return true;
@@ -84,8 +102,6 @@ const getUserIdForRegistration = () => {
   userId.value = urlParts.pop() as string;
   service.value = urlParts.pop() as string;
   isRegistrationLink.value = true;
-
-  console.log(idBase.value, idCompany.value, userId.value, service.value);
 };
 
 const getUserIdForUpdate = () => {
@@ -141,9 +157,10 @@ const handleApiResponse = (status: number) => {
   statusCode.value = status;
 
   if (status == 200) {
-    apiResponse.value = Message.SUCESS;
+    notify("SUCCESS", 4000, Message.SUCESS);
   } else {
     apiResponse.value = Message.ERROR;
+    notify("ERROR", 4000, Message.ERROR);
   }
 
   showButton.value = false;
@@ -157,6 +174,7 @@ const validateUsername = async () => {
 
   if (res?.status == 409) {
     userExists.value = true;
+    notify("ERROR", 4000, "Esse username já existe em nossa base");
   }
 };
 

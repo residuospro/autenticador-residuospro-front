@@ -2,7 +2,7 @@
   <div class="loadingContainer">
     <div class="modalContainer">
       <div class="spinnerContainer">
-        <Vue3Lottie :animationData="animation" :width="400" />
+        <VueSpinnerFade size="60" color="#fff" />
 
         <h1 class="message">{{ message }}</h1>
       </div>
@@ -12,7 +12,8 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import animation from "@/assets/animation2.json";
+
+import { VueSpinnerFade } from "vue3-spinners";
 
 let message = ref("Aguarde, estamos reunindo suas informações");
 
@@ -69,5 +70,15 @@ setTimeout(() => {
   margin-top: 0.75rem;
   font-size: 1.5rem;
   color: #fff;
+}
+
+@media (max-width: 769px) {
+  .spinnerContainer {
+    text-align: center;
+  }
+
+  .message {
+    font-size: 0.8rem;
+  }
 }
 </style>

@@ -37,14 +37,6 @@
         @keyup="getPasswordTwo(($event.target as HTMLInputElement).value)"
       />
 
-      <p :class="statusCode == 200 ? 'sucess' : 'error'">
-        {{ apiResponse }}
-      </p>
-
-      <p v-if="userExists" class="error">
-        Esse username já existe em nossa base
-      </p>
-
       <button class="eyeIconTwo" @click.prevent="showPassord('#pass2', $event)">
         <v-icon
           :icon="eyeIconTwo ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
@@ -53,7 +45,7 @@
 
       <button
         :disabled="!showButton"
-        :class="showButton ? 'submitBtn' : 'disabledBtn'"
+        :class="showButton && !userExists ? 'submitBtn' : 'disabledBtn'"
         type="submit"
       >
         Salvar
@@ -203,7 +195,7 @@ defineProps({
 
 .eyeIconOne {
   position: absolute;
-  top: 4.5rem;
+  top: 4.8rem;
   right: 0;
   height: 26%;
   width: 18%;
@@ -211,7 +203,7 @@ defineProps({
 
 .eyeIconTwo {
   position: absolute;
-  top: 9.8rem;
+  top: 10.5rem;
   right: 0;
   height: 22%;
   width: 18%;
@@ -258,6 +250,19 @@ input {
 @media (max-width: 767px) {
   .inputLogin {
     width: calc(100% - 0.2rem) !important;
+  }
+
+  .userInputContainer {
+    width: 75%;
+  }
+
+  .eyeIconTwo {
+    right: 12px;
+  }
+
+  .eyeIconOne {
+    right: 12px;
+    top: 4.8rem;
   }
 }
 
